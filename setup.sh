@@ -37,14 +37,14 @@ instack-install-undercloud
 sudo systemctl start jenkins
 sudo systemctl status jenkins
 
+# Wait Jenkins is up and running, it may take a long time.
+if ! timeout 1000 sh -c "while ! curl -s http://localhost:8282 | grep 'No builds in the queue.' >/dev/null 2>&1; do sleep 10; done"; then
+    echo "Jenkins is not up and running after long time."
+    exit 1
+fi
+
 # Install the jenkins job builder jobs
-cd ~/git/
-git clone https://github.com/hardys/jjb-openstack.git
-cd jjb-openstack/
-sudo cp jenkins_jobs.ini /etc/jenkins_jobs/
-for j in jobs/*
-do
-  echo "Adding jenkins job $j"
-  # FIXME: not sure sudo is really needed here..
-  sudo jenkins-jobs update $j
-done
+cd /opt
+sudo git clone https://github.com/hardys/jjb-openstack.git jenkins_jobs
+sudo ln -s /opt/jenkins_jobs /etc/jenkins_jobs
+sudo /opt/jenkins-job-builder/jenkins_jobs/cmd.py update --delete-old /etc/jenkins_jobs/jobs
