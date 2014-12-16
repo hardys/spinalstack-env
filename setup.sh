@@ -6,6 +6,16 @@ echo "set bg=dark" > ~/.vimrc
 echo "set tabstop=4" >> ~/.vimrc
 echo "set expandtab" >> ~/.vimrc
 
+# Install instack undercloud pieces
+sudo yum install -y http://rdo.fedorapeople.org/openstack-juno/rdo-release-juno.rpm
+sudo yum -y install instack-undercloud
+
+# Download images if you're not scping the from the host
+#wget -r -nd -np --reject "index.html*" https://repos.fedorapeople.org/repos/openstack-m/tripleo-images-rdo-juno/ 
+
+# Prepare answerfile
+cp /usr/share/instack-undercloud/instack.answers.sample ~/instack.answers
+
 # Clone my fork of the t-i-e additions from derekh
 mkdir -p ~/git; cd ~/git
 git clone https://github.com/hardys/tripleo-image-elements
