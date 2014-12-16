@@ -46,5 +46,5 @@ for j in jobs/*
 do
   echo "Adding jenkins job $j"
   # FIXME: not sure sudo is really needed here..
-  sudo jenkins-jobs update jobs/$j
+  sudo jenkins-jobs update $j
 done
