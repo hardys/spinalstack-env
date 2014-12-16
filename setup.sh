@@ -36,3 +36,15 @@ instack-install-undercloud
 # Jenkins seems to need starting..
 sudo systemctl start jenkins
 sudo systemctl status jenkins
+
+# Install the jenkins job builder jobs
+cd ~/git/
+git clone https://github.com/hardys/jjb-openstack.git
+cd jjb-openstack/
+sudo cp jenkins_jobs.ini /etc/jenkins_jobs/
+for j in jobs/*
+do
+  echo "Adding jenkins job $j"
+  # FIXME: not sure sudo is really needed here..
+  sudo jenkins-jobs update jobs/$j
+done
