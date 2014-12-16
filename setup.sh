@@ -32,3 +32,7 @@ sed -i 's/"os-cloud-config"/"os-cloud-config", "install-server"/' fedora-20-unde
 
 export JSONFILE=$PWD/fedora-20-undercloud-packages-spinal.json
 instack-install-undercloud
+
+# Jenkins seems to need starting..
+sudo systemctl start jenkins
+sudo systemctl status jenkins
