@@ -49,3 +49,7 @@ sudo git clone https://github.com/hardys/jjb-openstack.git jenkins_jobs
 sudo rm -fr /etc/jenkins_jobs
 sudo ln -s /opt/jenkins_jobs /etc/jenkins_jobs
 sudo /opt/jenkins-job-builder/jenkins_jobs/cmd.py update --delete-old /etc/jenkins_jobs/jobs
+
+# Pull credentials from /root so jobs can use them
+sudo cp /root/stackrc  ~stack
+sudo cp /root/tripleo-undercloud-passwords ~stack
