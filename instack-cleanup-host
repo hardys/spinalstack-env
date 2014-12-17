@@ -1,0 +1,9 @@
+#!/bin/sh
+# Cleanup VM's so you can start with a new clean undercloud
+virsh destroy instack
+virsh undefine instack
+virsh undefine baremetal_0
+virsh undefine baremetal_1
+virsh undefine baremetal_2
+virsh undefine baremetal_3
+

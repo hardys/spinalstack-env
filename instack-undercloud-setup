@@ -48,3 +48,18 @@ cd /opt
 sudo git clone https://github.com/hardys/jjb-openstack.git jenkins_jobs
 sudo ln -s /opt/jenkins_jobs /etc/jenkins_jobs
 sudo /opt/jenkins-job-builder/jenkins_jobs/cmd.py update --delete-old /etc/jenkins_jobs/jobs
+
+# Create a dir accessible to jenkins under /opt
+# FIXME: this isn't particularly great, look into parameterized job?
+sudo mkdir -p /opt/instack
+cp ~/deploy-overcloudrc /opt/instack
+cp ~/overcloud-env.json /opt/instack
+sudo cp /root/tripleo-undercloud-passwords /opt/instack
+sudo cp /root/stackrc /opt/instack
+cp /usr/bin/instack-deploy-overcloud /opt/instack
+sudo sed -i "s/tripleo-overcloud-passwords/\/opt\/instack\/tripleo-overcloud-passwords/" /opt/instack-deploy-overcloud
+sudo sed -i "s/^touch/#touch/" /opt/instack-deploy-overcloud
+sudo sed -i "s/^chmod 600/#chmod 600/" /opt/instack-deploy-overcloud
+sudo sed -i "s/^ssh-keygen/#ssh-keygen/" /opt/instack-deploy-overcloud
+
+

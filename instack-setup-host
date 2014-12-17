@@ -1,0 +1,23 @@
+#!/bin/sh
+
+# Run instack-virt-setup then cache a local copy of the images on the first run
+# Allows quicker rebuild of the undercloud after instack-cleanup-host
+instack-virt-setup
+
+INSTACK_MAC=$(tripleo get-vm-mac instack)
+INSTACK_IP=$(cat /var/lib/libvirt/dnsmasq/default.leases  | grep ${INSTACK_MAC} | awk '{print $3;}')
+
+if [ -n ${INSTACK_IP} ]; then
+  echo "instack vm IP address is ${INSTACK_IP}"
+fi
+
+# Cache images locally to avoid re-downloading every undercloud deployment
+UNDERCLOUD_CACHE="./undercloud_cache"
+if [ ! -d ${UNDERCLOUD_CACHE} ]; then
+  sudo yum -y install wget # install wget if necessary
+  pushd ${UNDERCLOUD_CACHE}
+  wget -r -nd -np --reject "index.html*" https://repos.fedorapeople.org/repos/openstack-m/tripleo-images-rdo-juno/ 
+  popd
+fi
+
+scp ${UNDERCLOUD_CACHE}/* stack@${INSTACK_IP}:/home/stack
