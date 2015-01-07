@@ -14,6 +14,7 @@ fi
 # Cache images locally to avoid re-downloading every undercloud deployment
 UNDERCLOUD_CACHE="./undercloud_cache"
 if [ ! -d ${UNDERCLOUD_CACHE} ]; then
+  mkdir ${UNDERCLOUD_CACHE}
   sudo yum -y install wget # install wget if necessary
   pushd ${UNDERCLOUD_CACHE}
   wget -r -nd -np --reject "index.html*" https://repos.fedorapeople.org/repos/openstack-m/tripleo-images-rdo-juno/ 
